@@ -1,6 +1,6 @@
 {
   "compilerOptions": {
-    "outDir": "./dist",
+    "outDir": "public",
     "rootDir": "./src",
     "target": "ESNext",
     "module": "NodeNext",
@@ -13,5 +13,5 @@
     "resolveJsonModule": true
   },
   "include": ["src"],
-  "exclude": ["node_modules", "dist"]
+  "exclude": ["node_modules", "public"]
 }
