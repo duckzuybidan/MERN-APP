@@ -14,7 +14,7 @@ const PORT = process.env.PORT || 5000
 app.use('/api',
     cors({
         credentials: true,
-        origin: 'http://localhost:5173',
+        origin: process.env.CLIENT_URL,
         methods: ['GET', 'POST', 'PUT', 'DELETE'],
         allowedHeaders: ['Content-Type', 'Authorization', 'Cache-Control', 'Expires', 'Pragma', 'X-Requested-With'],
     })
