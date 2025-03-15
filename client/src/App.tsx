@@ -40,7 +40,6 @@ import Orders from "./pages/admin/orders"
 import AdminProduct from "./pages/admin/products/product-id"
 function App() {
   axios.defaults.withCredentials = true
-  axios.defaults.baseURL = "http://localhost:5000"
   const {isAuthenticated, isLoading: isCheckAuthLoading } = useSelector(
     (state: RootState) => state.auth
   );
