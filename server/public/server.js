@@ -17,7 +17,7 @@ const app = (0, express_1.default)();
 const PORT = process.env.PORT || 3000;
 app.use('/api', (0, cors_1.default)({
     credentials: true,
-    origin: 'http://localhost:5173',
+    origin: process.env.CLIENT_URL,
     methods: ['GET', 'POST', 'PUT', 'DELETE'],
     allowedHeaders: ['Content-Type', 'Authorization', 'Cache-Control', 'Expires', 'Pragma', 'X-Requested-With'],
 }));
