@@ -1,0 +1,15 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+input::placeholder {
+    opacity: 0.5;
+}
+textarea::placeholder {
+    opacity: 0.5;
+}
+textarea {
+    resize: none;
+}
+
+

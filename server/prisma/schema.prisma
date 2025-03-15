@@ -1,0 +1,162 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mongodb"
+  url      = env("DATABASE_URL")
+}
+
+enum UserRole {
+  USER
+  ADMIN
+}
+
+enum CartItemStatus {
+  UNVERIFIED
+  VERIFIED
+  SHIPPED
+}
+
+enum PaymentMethod {
+  CASH_ON_DELIVERY
+}
+
+model User {
+  id             String       @id @default(auto()) @map("_id") @db.ObjectId
+  username       String
+  email          String       @unique
+  hashedPassword String?
+  role           UserRole     @default(USER)
+  avatar         String       @default("https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png")
+  phone          String?
+  isVerified     Boolean      @default(false)
+  cart           Cart?
+  sessions       Session[]
+  emailSystem    EmailSystem?
+  addresses      Address[]
+}
+
+model Address {
+  id          String     @id @default(auto()) @map("_id") @db.ObjectId
+  userId      String     @db.ObjectId
+  user        User       @relation(fields: [userId], references: [id], onDelete: Cascade)
+  cartItems   CartItem[]
+  lat         Float
+  lng         Float
+  houseNumber String?
+  road        String?
+  suburb      String?
+  city        String?
+  state       String?
+  country     String?
+  postcode    String?
+}
+
+model Session {
+  sid       String   @id @default(auto()) @map("_id") @db.ObjectId
+  id        String   @unique
+  userId    String   @db.ObjectId
+  expiresAt DateTime
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model EmailSystem {
+  id                 String              @id @default(auto()) @map("_id") @db.ObjectId
+  createdAt          DateTime            @default(now())
+  userId             String              @unique @db.ObjectId
+  user               User                @relation(fields: [userId], references: [id], onDelete: Cascade)
+  emailVerifications EmailVerification[]
+  resetPasswords     ResetPassword[]
+}
+
+model EmailVerification {
+  id            String      @id @default(auto()) @map("_id") @db.ObjectId
+  code          String
+  createdAt     DateTime    @default(now())
+  emailSystemId String      @unique @db.ObjectId
+  emailSystem   EmailSystem @relation(fields: [emailSystemId], references: [id], onDelete: Cascade)
+}
+
+model ResetPassword {
+  id            String      @id @default(auto()) @map("_id") @db.ObjectId
+  code          String
+  createdAt     DateTime    @default(now())
+  emailSystemId String      @unique @db.ObjectId
+  emailSystem   EmailSystem @relation(fields: [emailSystemId], references: [id], onDelete: Cascade)
+}
+
+
+model Category {
+  id       String     @id @default(auto()) @map("_id") @db.ObjectId
+  name     String
+  image    String?
+  parentId String?    @db.ObjectId
+  parent   Category?  @relation("CategoryToChildren", fields: [parentId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  children Category[] @relation("CategoryToChildren")
+  products Product[]
+}
+
+model ProductVariant {
+  id             String    @id @default(auto()) @map("_id") @db.ObjectId
+  name           String
+  image          String
+  price          String
+  inStock        String
+  discountPrice  String?
+  discountExpiry DateTime?
+  productId      String    @db.ObjectId
+  product        Product   @relation(fields: [productId], references: [id], onDelete: Cascade)
+
+  CartItems CartItem[]
+}
+
+model Product {
+  id            String           @id @default(auto()) @map("_id") @db.ObjectId
+  title         String
+  description   String
+  displayImages String[]
+  category      Category         @relation(fields: [categoryId], references: [id], onDelete: Cascade)
+  categoryId    String           @db.ObjectId
+  variants      ProductVariant[]
+  createdAt     DateTime         @default(now())
+  updatedAt     DateTime         @default(now())
+  eventIds      String[]         @default([]) @db.ObjectId
+  events        Event[]          @relation(fields: [eventIds], references: [id])
+}
+
+model Event {
+  id          String    @id @default(auto()) @map("_id") @db.ObjectId
+  title       String
+  description String
+  isActive    Boolean   @default(true)
+  productIds  String[]  @default([]) @db.ObjectId
+  products    Product[] @relation(fields: [productIds], references: [id])
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @default(now())
+  expiresAt   DateTime
+}
+
+model Cart {
+  id        String     @id @default(auto()) @map("_id") @db.ObjectId
+  userId    String     @unique @db.ObjectId
+  user      User       @relation(fields: [userId], references: [id])
+  cartItems CartItem[]
+}
+
+model CartItem {
+  id            String         @id @default(auto()) @map("_id") @db.ObjectId
+  cartId        String         @db.ObjectId
+  cart          Cart           @relation(fields: [cartId], references: [id], onDelete: Cascade)
+  itemId        String         @db.ObjectId
+  item          ProductVariant @relation(fields: [itemId], references: [id], onDelete: Cascade)
+  phone         String
+  addressId     String         @db.ObjectId
+  address       Address        @relation(fields: [addressId], references: [id], onDelete: Cascade)
+  quantity      String
+  status        CartItemStatus @default(UNVERIFIED)
+  paymentMethod PaymentMethod
+  price         String
+  createdAt     DateTime       @default(now())
+  updatedAt     DateTime       @default(now())
+}
