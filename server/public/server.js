@@ -29,9 +29,9 @@ app.use(body_parser_1.default.json({ limit: '50mb' }));
 app.use('/api/auth', auth_route_1.default);
 app.use('/api/admin', admin_route_1.default);
 app.use('/api/user', user_route_1.default);
-app.use(express_1.default.static(path_1.default.join(__dirname, "dist")));
+app.use(express_1.default.static(path_1.default.join(__dirname, "public")));
 app.get("*", (_, res) => {
-    res.sendFile(path_1.default.join(__dirname, "dist", "index.html"));
+    res.sendFile(path_1.default.join(__dirname, "public", "index.html"));
 });
 app.listen(PORT, () => {
     console.log(`Server is running on port ${PORT}`);

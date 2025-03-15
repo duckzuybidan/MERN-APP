@@ -27,10 +27,10 @@ app.use(bodyParser.json({ limit: '50mb'}));
 app.use('/api/auth', authRouter)
 app.use('/api/admin', adminRouter)
 app.use('/api/user', userRouter)
-app.use(express.static(path.join(__dirname, "dist")));
+app.use(express.static(path.join(__dirname, "public")));
 
 app.get("*", (_, res) => {
-  res.sendFile(path.join(__dirname, "dist", "index.html"));
+  res.sendFile(path.join(__dirname, "public", "index.html"));
 });
 app.listen(PORT, () => {
     console.log(`Server is running on port ${PORT}`)
