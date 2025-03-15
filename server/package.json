@@ -7,7 +7,7 @@
     "start": "set NODE_ENV=production && ts-node src/server.ts",
     "dev": "set NODE_ENV=development && nodemon",
     "build": "tsc",
-    "serve": "set NODE_ENV=production && node public/server.js"
+    "serve": "set NODE_ENV=production && node public/server.js && prisma generate"
   },
   "keywords": [],
   "author": "",
