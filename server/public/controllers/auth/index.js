@@ -555,7 +555,7 @@ const resetPassword = async (req, res) => {
     }
 };
 exports.resetPassword = resetPassword;
-const oAuth = async (_, res) => {
+const oAuth = async (req, res) => {
     try {
         const { generateState, generateCodeVerifier } = await import('arctic');
         const state = generateState();
@@ -568,7 +568,9 @@ const oAuth = async (_, res) => {
             httpOnly: true,
             secure: process.env.NODE_ENV === 'production',
         });
-        const url = await (0, arctic_1.googlOAuthClient)().then((client) => {
+        const protocol = req.headers.host?.includes('localhost') ? 'http' : 'https';
+        const baseUrl = `${protocol}://${req.headers.host}`;
+        const url = await (0, arctic_1.googlOAuthClient)(baseUrl).then((client) => {
             return client.createAuthorizationURL(state, codeVerifier, {
                 scopes: ['profile', 'email'],
             });
@@ -616,7 +618,9 @@ const oAuthCallback = async (req, res) => {
             });
             return;
         }
-        const { accessToken } = await (0, arctic_1.googlOAuthClient)().then((client) => {
+        const protocol = req.headers.host?.includes('localhost') ? 'http' : 'https';
+        const baseUrl = `${protocol}://${req.headers.host}`;
+        const { accessToken } = await (0, arctic_1.googlOAuthClient)(baseUrl).then((client) => {
             return client.validateAuthorizationCode(code, codeVerifier);
         });
         const googleResponse = await fetch('https://www.googleapis.com/oauth2/v1/userinfo', {

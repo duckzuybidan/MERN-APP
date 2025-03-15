@@ -14,7 +14,7 @@ const body_parser_1 = __importDefault(require("body-parser"));
 const path_1 = __importDefault(require("path"));
 dotenv_1.default.config();
 const app = (0, express_1.default)();
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT || 5000;
 app.use('/api', (0, cors_1.default)({
     credentials: true,
     origin: process.env.CLIENT_URL,
@@ -29,10 +29,10 @@ app.use(body_parser_1.default.json({ limit: '50mb' }));
 app.use('/api/auth', auth_route_1.default);
 app.use('/api/admin', admin_route_1.default);
 app.use('/api/user', user_route_1.default);
-app.use(express_1.default.static(path_1.default.join(__dirname, "public")));
+app.use(express_1.default.static(path_1.default.join(__dirname, "dist")));
 app.get("*", (_, res) => {
-    res.sendFile(path_1.default.join(__dirname, "public", "index.html"));
+    res.sendFile(path_1.default.join(__dirname, "dist", "index.html"));
 });
-app.listen(PORT, '0.0.0.0', () => {
+app.listen(PORT, () => {
     console.log(`Server is running on port ${PORT}`);
 });
