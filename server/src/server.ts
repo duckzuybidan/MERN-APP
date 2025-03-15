@@ -6,6 +6,7 @@ import authRouter from './routes/auth/auth-route'
 import adminRouter from './routes/admin/admin-route'
 import userRouter from './routes/user/user-route'
 import bodyParser from 'body-parser'
+import path from 'path'
 dotenv.config()
 const app = express()
 const PORT = process.env.PORT || 5000
@@ -26,6 +27,11 @@ app.use(bodyParser.json({ limit: '50mb'}));
 app.use('/api/auth', authRouter)
 app.use('/api/admin', adminRouter)
 app.use('/api/user', userRouter)
+app.use(express.static(path.join(__dirname, "dist")));
+
+app.get("*", (_, res) => {
+  res.sendFile(path.join(__dirname, "dist", "index.html"));
+});
 app.listen(PORT, () => {
     console.log(`Server is running on port ${PORT}`)
 })

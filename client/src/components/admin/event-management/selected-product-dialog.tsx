@@ -71,7 +71,6 @@ export default function SelectedProductDialog({
                   </div>
                 }
               </div>
-              <p className="text-[10px]">{product.category}</p>
             </div>
           </div>
         ))}

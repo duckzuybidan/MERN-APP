@@ -1,4 +1,4 @@
-import { prisma } from "./prisma.ts";
+import { prisma } from "./prisma";
 export const lucia = async () => {
    const { Lucia } = await import("lucia");
    const { PrismaAdapter } = await import("@lucia-auth/adapter-prisma");

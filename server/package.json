@@ -6,7 +6,8 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "set NODE_ENV=production && ts-node src/server.ts",
     "dev": "set NODE_ENV=development && nodemon",
-    "build": "tsc"
+    "build": "tsc",
+    "serve": "set NODE_ENV=production && node dist/server.js"
   },
   "keywords": [],
   "author": "",
