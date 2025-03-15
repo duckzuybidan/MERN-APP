@@ -33,6 +33,6 @@ app.use(express_1.default.static(path_1.default.join(__dirname, "public")));
 app.get("*", (_, res) => {
     res.sendFile(path_1.default.join(__dirname, "public", "index.html"));
 });
-app.listen(PORT, () => {
+app.listen(PORT, '0.0.0.0', () => {
     console.log(`Server is running on port ${PORT}`);
 });
