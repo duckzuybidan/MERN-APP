@@ -645,7 +645,7 @@ const oAuthCallback = async (req: Request, res: Response) => {
         res.cookie(sessionCookie.name, sessionCookie.value, sessionCookie.attributes)
         res.clearCookie('state')
         res.clearCookie('code_verifier')
-        res.redirect(process.env.CLIENT_URL!)
+        res.redirect(baseUrl)
     }catch (error) {
         console.log(error)
         res.status(500).json({
