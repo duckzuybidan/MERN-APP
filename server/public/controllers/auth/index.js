@@ -114,7 +114,9 @@ const signUp = async (req, res) => {
         });
         const code = Math.random().toString(36).slice(-6);
         const token = jsonwebtoken_1.default.sign({ code }, process.env.JWT_SECRET, { expiresIn: '5m' });
-        const url = `${process.env.CLIENT_URL}/verify-email?token=${token}&userId=${user.id}`;
+        const protocol = req.headers.host?.includes('localhost') ? 'http' : 'https';
+        const baseUrl = `${protocol}://${req.headers.host}`;
+        const url = `${baseUrl}/verify-email?token=${token}&userId=${user.id}`;
         (0, nodemailer_1.sendEmail)(email, 'Verify your email', htmlContent(url, 'Verify your email', userVerificationContent));
         await prisma_1.prisma.emailSystem.create({
             data: {
@@ -324,7 +326,9 @@ const resendEmailVerification = async (req, res) => {
         }
         const code = Math.random().toString(36).slice(-6);
         const token = jsonwebtoken_1.default.sign({ code }, process.env.JWT_SECRET, { expiresIn: '5m' });
-        const url = `${process.env.CLIENT_URL}/verify-email?token=${token}&userId=${user.id}`;
+        const protocol = req.headers.host?.includes('localhost') ? 'http' : 'https';
+        const baseUrl = `${protocol}://${req.headers.host}`;
+        const url = `${baseUrl}/verify-email?token=${token}&userId=${user.id}`;
         if (!user.emailSystem) {
             await prisma_1.prisma.emailSystem.create({
                 data: {
@@ -418,7 +422,9 @@ const forgotPassword = async (req, res) => {
         });
         const code = Math.random().toString(36).slice(-6);
         const token = jsonwebtoken_1.default.sign({ code }, process.env.JWT_SECRET, { expiresIn: '5m' });
-        const url = `${process.env.CLIENT_URL}/reset-password?token=${token}&userId=${user.id}`;
+        const protocol = req.headers.host?.includes('localhost') ? 'http' : 'https';
+        const baseUrl = `${protocol}://${req.headers.host}`;
+        const url = `${baseUrl}/verify-email?token=${token}&userId=${user.id}`;
         if (!emailSystem) {
             await prisma_1.prisma.emailSystem.create({
                 data: {
