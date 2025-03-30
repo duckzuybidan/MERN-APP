@@ -424,7 +424,7 @@ const forgotPassword = async (req, res) => {
         const token = jsonwebtoken_1.default.sign({ code }, process.env.JWT_SECRET, { expiresIn: '5m' });
         const protocol = req.headers.host?.includes('localhost') ? 'http' : 'https';
         const baseUrl = `${protocol}://${req.headers.host}`;
-        const url = `${baseUrl}/verify-email?token=${token}&userId=${user.id}`;
+        const url = `${baseUrl}/reset-password?token=${token}&userId=${user.id}`;
         if (!emailSystem) {
             await prisma_1.prisma.emailSystem.create({
                 data: {
